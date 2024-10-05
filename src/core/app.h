@@ -2,15 +2,17 @@
 
 #include <stdbool.h>
 
-typedef void (*FApp)();
-
 typedef struct {
-  FApp init, update, draw, destroy;
+  void (*init)();
+  void (*destroy)();
+  void (*update)(float deltaTime);
+  void (*draw)(float deltaTime);
 } App;
 
-void  App_init(App *self, FApp init, FApp update, FApp draw, FApp destroy);
-void  App_update(App *self);
-void  App_quit(App *self);
+void App_init(App *self, void (*init)(), void (*update)(float deltaTime),
+              void (*draw)(float deltaTime), void (*destroy)());
+void App_update(App *self);
+void App_quit(App *self);
 
 float getAspectRatio();
 

@@ -199,6 +199,52 @@
       "-g",
       "-c",
       "-o",
+      "obj/Debug/Debug/OpenGL-Template/player.o",
+      "src/game/player.c"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/player.c",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/player.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/player.o",
+      "src/game/player.h"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/player.h",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/player.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
       "obj/Debug/Debug/OpenGL-Template/sprite.o",
       "src/game/sprite.c"
     ],
