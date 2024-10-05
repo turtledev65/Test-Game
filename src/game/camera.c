@@ -37,8 +37,7 @@ void Camera_getViewMatrix(Camera *self, mat4 dest)
   glm_lookat(self->pos.raw, self->target.raw, worldUp, dest);
 }
 
-void Camera_getProjectionMatrix(Camera *self, vec2s *windowSize, mat4 dest)
+void Camera_getProjectionMatrix(Camera *self, float aspectRatio, mat4 dest)
 {
-  glm_perspective(glm_rad(self->radius), windowSize->x / windowSize->y, 0.1f,
-                  100.0f, dest);
+  glm_perspective(glm_rad(self->radius), aspectRatio, 0.1f, 100.0f, dest);
 }

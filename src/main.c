@@ -65,7 +65,7 @@ static void draw()
   Shader_setMat4(&shader, "uView", view);
 
   mat4 proj;
-  Camera_getProjectionMatrix(&camera, &(vec2s){.x = 900, .y = 600}, proj);
+  Camera_getProjectionMatrix(&camera, getAspectRatio(), proj);
   Shader_setMat4(&shader, "uProj", proj);
 
   glActiveTexture(GL_TEXTURE0);
