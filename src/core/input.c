@@ -14,7 +14,8 @@ bool isKeyDown(int key)
 
 void Keyboard_update(GLFWwindow *handle)
 {
-  for (int i = 0; i < GLFW_KEY_LAST; i++) {
+  // 32 is the first key
+  for (int i = 32; i < GLFW_KEY_LAST; i++) {
     keyboard.keys[i].lastDown = keyboard.keys[i].down;
     keyboard.keys[i].down     = glfwGetKey(handle, i) == GLFW_PRESS;
   }
