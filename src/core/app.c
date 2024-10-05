@@ -40,6 +40,11 @@ void App_quit(App *self)
   _destroy(self);
 }
 
+float getAspectRatio()
+{
+  return window.size.x / window.size.y;
+}
+
 // Private Functions
 static void _draw(App *self)
 {
