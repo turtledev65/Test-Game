@@ -45,6 +45,7 @@ void Window_init(Window *self, vec2s size, char *title)
   }
 
   glViewport(0, 0, self->size.x, self->size.y);
+  glEnable(GL_DEPTH_TEST);
 }
 
 // Private Functions
