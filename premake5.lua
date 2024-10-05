@@ -22,7 +22,7 @@ project "OpenGL-Template"
   targetdir "bin/%{cfg.buildcfg}"
   objdir "obj/%{cfg.buildcfg}"
 
-  includedirs { "vendor/glad/include", "vendor/glfw/include", "vendor/cglm/include", "vendor/stb_image" }
+  includedirs { "src/", "vendor/glad/include", "vendor/glfw/include", "vendor/cglm/include", "vendor/stb_image" }
 
   files
   {
