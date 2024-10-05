@@ -6,6 +6,9 @@
 
 typedef struct {
   vec3s pos;
+  vec3s rotation;
+  vec3s scale;
+
   Texture texture;
 } Sprite;
 

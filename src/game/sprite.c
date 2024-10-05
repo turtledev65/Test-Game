@@ -22,6 +22,8 @@ void Sprite_init(Sprite *self, GLenum format, const char *path)
   _init();
 
   glm_vec3_copy(GLM_VEC3_ZERO, self->pos.raw);
+  glm_vec3_copy(GLM_VEC3_ONE, self->scale.raw);
+  glm_vec3_copy(GLM_VEC3_ZERO, self->rotation.raw);
 
   glActiveTexture(GL_TEXTURE0);
   Texture_init(&self->texture, format, path);
@@ -38,6 +40,10 @@ void Sprite_draw(Sprite *self, Camera *camera)
 
   mat4 model = GLM_MAT4_IDENTITY_INIT;
   glm_translate(model, self->pos.raw);
+  glm_rotate(model, glm_rad(self->rotation.z), (vec3){0.0f, 0.0f, 1.0f});
+  glm_rotate(model, glm_rad(self->rotation.y), (vec3){0.0f, 1.0f, 0.0f});
+  glm_rotate(model, glm_rad(self->rotation.x), (vec3){1.0f, 0.0f, 0.0f});
+  glm_scale(model, self->scale.raw);
   Shader_setMat4(&_shader, "uModel", model);
 
   mat4 view;
