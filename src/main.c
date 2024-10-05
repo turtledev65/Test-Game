@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "game/camera.h"
+
 #include "gfx/gbuffer.h"
 #include "gfx/shader.h"
 #include "gfx/texture.h"
@@ -16,6 +18,8 @@ static GBuffer vbo;
 static GBuffer ibo;
 static Shader  shader;
 static Texture containerTexture;
+
+static Camera camera;
 
 static void init()
 {
@@ -46,6 +50,8 @@ static void init()
 
   glActiveTexture(GL_TEXTURE0);
   Texture_init(&containerTexture, GL_RGB, "res/textures/container.jpg");
+
+  Camera_init(&camera, 9.0f);
 }
 
 static void draw()
@@ -53,6 +59,14 @@ static void draw()
   Shader_use(&shader);
 
   Shader_setInt(&shader, "uContainerTexture", 0);
+
+  mat4 view;
+  Camera_getViewMatrix(&camera, view);
+  Shader_setMat4(&shader, "uView", view);
+
+  mat4 proj;
+  Camera_getProjectionMatrix(&camera, &(vec2s){.x = 900, .y = 600}, proj);
+  Shader_setMat4(&shader, "uProj", proj);
 
   glActiveTexture(GL_TEXTURE0);
   Texture_bind(&containerTexture);
@@ -69,6 +83,8 @@ static void update()
   if (isKeyDown(GLFW_KEY_ESCAPE)) {
     App_quit(&app);
   }
+
+  Camera_update(&camera);
 }
 
 int main()

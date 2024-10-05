@@ -146,6 +146,50 @@
       "-g",
       "-c",
       "-o",
+      "obj/Debug/Debug/OpenGL-Template/camera.o",
+      "src/game/camera.c"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/camera.c",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/camera.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/camera.o",
+      "src/game/camera.h"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/camera.h",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/camera.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
       "obj/Debug/Debug/OpenGL-Template/gbuffer.o",
       "src/gfx/gbuffer.c"
     ],
