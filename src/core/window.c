@@ -4,8 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void _handleError(int code, const char *msg);
+
+// Public Functions
 void Window_init(Window *self, vec2s size, char *title)
 {
+  glfwSetErrorCallback(_handleError);
+
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -40,5 +45,10 @@ void Window_init(Window *self, vec2s size, char *title)
   }
 
   glViewport(0, 0, self->size.x, self->size.y);
+}
 
+// Private Functions
+static void _handleError(int code, const char *msg)
+{
+  fprintf(stderr, "ERROR: %s\n", msg);
 }
