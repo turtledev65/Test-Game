@@ -44,8 +44,11 @@ void Window_init(Window *self, vec2s size, char *title)
     exit(1);
   }
 
-  glViewport(0, 0, self->size.x, self->size.y);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glViewport(0, 0, self->size.x, self->size.y);
 }
 
 // Private Functions

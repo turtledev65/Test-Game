@@ -26,8 +26,8 @@ static void init()
 
 static void draw()
 {
-  Sprite_draw(&face, &camera);
   Sprite_draw(&container, &camera);
+  Sprite_draw(&face, &camera);
 }
 
 static void update()
