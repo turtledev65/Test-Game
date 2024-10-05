@@ -24,6 +24,7 @@ void Camera_init(Camera *self, float radius)
 void Camera_update(Camera *self)
 {
   self->theta = glm_clamp(self->theta, -89.0f, 89.0f);
+  self->zoom = glm_clamp(self->zoom, 1.0f, 45.0f);
 
   self->pos.x =
       cos(glm_rad(self->phi)) * cos(glm_rad(self->theta)) * self->radius;
@@ -39,5 +40,5 @@ void Camera_getViewMatrix(Camera *self, mat4 dest)
 
 void Camera_getProjectionMatrix(Camera *self, float aspectRatio, mat4 dest)
 {
-  glm_perspective(glm_rad(self->radius), aspectRatio, 0.1f, 100.0f, dest);
+  glm_perspective(glm_rad(self->zoom), aspectRatio, 0.1f, 100.0f, dest);
 }
