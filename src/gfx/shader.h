@@ -1,0 +1,14 @@
+#pragma once
+
+typedef struct {
+  unsigned int handle;
+  unsigned int vsHandle, fsHandle;
+} Shader;
+
+void Shader_init(Shader *self, const char *vsPath, const char *fsPath);
+void Shader_initWithSource(Shader *self, const char *vsSource,
+                           const char *fsSource);
+void Shader_use(Shader *self);
+
+void Shader_setInt(Shader *self, const char *name, int val);
+void Shader_setFloat(Shader *self, const char *name, float val);
