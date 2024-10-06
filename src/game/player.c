@@ -14,9 +14,11 @@ void Player_init(Player *self, vec3 pos)
 
 void Player_update(Player *self, float deltaTime)
 {
-  vec3s dir = {.x = isKeyDown(GLFW_KEY_D) - isKeyDown(GLFW_KEY_A),
+  vec3s dir = {.x = (isKeyDown(GLFW_KEY_D) || isKeyDown(GLFW_KEY_RIGHT)) -
+                    (isKeyDown(GLFW_KEY_A) || isKeyDown(GLFW_KEY_LEFT)),
                .y = 0.0f,
-               .z = isKeyDown(GLFW_KEY_S) - isKeyDown(GLFW_KEY_W)};
+               .z = (isKeyDown(GLFW_KEY_S) || isKeyDown(GLFW_KEY_DOWN)) -
+                    (isKeyDown(GLFW_KEY_W) || isKeyDown(GLFW_KEY_UP))};
   glm_vec3_normalize(dir.raw);
 
   self->sprite.pos.x += dir.x * deltaTime * self->speed;
