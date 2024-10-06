@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "game/camera.h"
+#include "game/plane.h"
 #include "game/player.h"
 #include "game/sprite.h"
 
@@ -15,6 +16,7 @@ static App app;
 static Camera camera;
 
 static Sprite container;
+static Plane  plane;
 static Player player;
 
 static void init()
@@ -22,10 +24,12 @@ static void init()
   Camera_init(&camera);
 
   Sprite_init(&container, "res/textures/container.jpg");
-  container.pos.z      = -2.0f;
+  container.pos.z      = -4.0f;
   container.pos.y      = -1.0f;
   container.rotation.x = -90.0f;
 
+  Plane_init(&plane, (vec3s){.x = 0.0f, .y = -1.0f, .z = 0.0f},
+             (vec3s){.x = 2.0f, .y = 2.0f});
   Player_init(&player, GLM_VEC3_ZERO);
 }
 
@@ -50,6 +54,7 @@ static void update(float deltaTime)
 static void draw(float deltaTime)
 {
   Sprite_draw(&container, &camera);
+  Plane_draw(&plane, &camera);
   Player_draw(&player, &camera);
 }
 

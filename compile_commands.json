@@ -199,6 +199,52 @@
       "-g",
       "-c",
       "-o",
+      "obj/Debug/Debug/OpenGL-Template/plane.o",
+      "src/game/plane.c"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/plane.c",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/plane.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/plane.o",
+      "src/game/plane.h"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/plane.h",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/plane.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
       "obj/Debug/Debug/OpenGL-Template/player.o",
       "src/game/player.c"
     ],
