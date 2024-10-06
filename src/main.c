@@ -38,9 +38,13 @@ static void update(float deltaTime)
   Camera_update(&camera);
   Player_update(&player, deltaTime);
 
-  // Update the target to the player's position  
-  glm_vec3_lerp(camera.target.raw, player.sprite.pos.raw, 0.05f,
-                camera.target.raw);
+  // Update the target to the player's position
+  vec3s target = {
+      .x = player.sprite.pos.x,
+      .y = 0.0f, // don't follow the player's y position
+      .z = player.sprite.pos.z,
+  };
+  glm_vec3_lerp(camera.target.raw, target.raw, 0.05f, camera.target.raw);
 }
 
 static void draw(float deltaTime)

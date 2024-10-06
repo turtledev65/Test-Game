@@ -5,6 +5,8 @@
 
 #include <cglm/cglm.h>
 
+#define ANIMATION_SPEED 10.0f;
+
 void Player_init(Player *self, vec3 pos)
 {
   Sprite_init(&self->sprite, "res/textures/awesomeface.png");
@@ -21,8 +23,18 @@ void Player_update(Player *self, float deltaTime)
                     (isKeyDown(GLFW_KEY_W) || isKeyDown(GLFW_KEY_UP))};
   glm_vec3_normalize(dir.raw);
 
+  float t = 0.0f;
+  if (dir.x != 0.0f) {
+    t = self->sprite.pos.x;
+  } else if (dir.z != 0.0f) {
+    t = self->sprite.pos.z;
+  }
+  t *= ANIMATION_SPEED;
+
   self->sprite.pos.x += dir.x * deltaTime * self->speed;
   self->sprite.pos.z += dir.z * deltaTime * self->speed;
+  self->sprite.pos.y += sin(t) * deltaTime;
+  self->sprite.pos.y = glm_max(self->sprite.pos.y, 0.0f);
 }
 
 void Player_draw(Player *self, Camera *camera)
