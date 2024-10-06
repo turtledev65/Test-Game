@@ -7,7 +7,7 @@
 
 void Player_init(Player *self, vec3 pos)
 {
-  Sprite_init(&self->sprite, GL_RGBA, "res/textures/awesomeface.png");
+  Sprite_init(&self->sprite, "res/textures/awesomeface.png");
   glm_vec3_copy(pos, self->sprite.pos.raw);
   self->speed = 3.0f;
 }

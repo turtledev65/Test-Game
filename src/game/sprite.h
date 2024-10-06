@@ -12,5 +12,5 @@ typedef struct {
   Texture texture;
 } Sprite;
 
-void Sprite_init(Sprite *self, GLenum format, const char *path);
+void Sprite_init(Sprite *self, const char *path);
 void Sprite_draw(Sprite *self, Camera *camera);

@@ -21,7 +21,7 @@ static void init()
 {
   Camera_init(&camera, 5.0f);
 
-  Sprite_init(&container, GL_RGB, "res/textures/container.jpg");
+  Sprite_init(&container, "res/textures/container.jpg");
   container.pos.z      = -2.0f;
   container.pos.y      = -1.0f;
   container.rotation.x = -90.0f;

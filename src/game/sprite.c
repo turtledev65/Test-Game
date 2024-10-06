@@ -17,7 +17,7 @@ static bool    _initialized = false;
 static void _init();
 
 // Public Functions
-void Sprite_init(Sprite *self, GLenum format, const char *path)
+void Sprite_init(Sprite *self, const char *path)
 {
   _init();
 
@@ -26,7 +26,7 @@ void Sprite_init(Sprite *self, GLenum format, const char *path)
   glm_vec3_copy(GLM_VEC3_ZERO, self->rotation.raw);
 
   glActiveTexture(GL_TEXTURE0);
-  Texture_init(&self->texture, format, path);
+  Texture_init(&self->texture, path);
 }
 
 void Sprite_draw(Sprite *self, Camera *camera)

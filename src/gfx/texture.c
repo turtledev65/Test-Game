@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stb_image.h>
 
-void Texture_init(Texture *self, GLenum format, const char *path)
+void Texture_init(Texture *self, const char *path)
 {
   stbi_set_flip_vertically_on_load(true);
 
@@ -12,6 +12,21 @@ void Texture_init(Texture *self, GLenum format, const char *path)
   unsigned char *data = stbi_load(path, &width, &height, &nrChannels, 0);
 
   if (data != NULL) {
+    GLenum format = GL_RGB;
+    switch (nrChannels) {
+    case 1:
+      format = GL_RED;
+      break;
+    case 3:
+      format = GL_RGB;
+      break;
+    case 4:
+      format = GL_RGBA;
+      break;
+    default:
+      break;
+    }
+
     Texture_initFromData(self, width, height, format, data);
   } else {
     fprintf(stderr, "ERROR: Failed to load texture %s: %s\n", path,
