@@ -19,7 +19,7 @@ static Player player;
 
 static void init()
 {
-  Camera_init(&camera, 5.0f);
+  Camera_init(&camera);
 
   Sprite_init(&container, "res/textures/container.jpg");
   container.pos.z      = -2.0f;
@@ -37,6 +37,10 @@ static void update(float deltaTime)
 
   Camera_update(&camera);
   Player_update(&player, deltaTime);
+
+  // Update the target to the player's position  
+  glm_vec3_lerp(camera.target.raw, player.sprite.pos.raw, 0.05f,
+                camera.target.raw);
 }
 
 static void draw(float deltaTime)
