@@ -199,6 +199,52 @@
       "-g",
       "-c",
       "-o",
+      "obj/Debug/Debug/OpenGL-Template/map.o",
+      "src/game/map.c"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/map.c",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/map.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/map.o",
+      "src/game/map.h"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/game/map.h",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/map.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
       "obj/Debug/Debug/OpenGL-Template/plane.o",
       "src/game/plane.c"
     ],
@@ -527,6 +573,52 @@
     "directory": "/home/matei/projects/gamedev/test-game",
     "file": "/home/matei/projects/gamedev/test-game/src/main.c",
     "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/main.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/dynamic-array.o",
+      "src/util/dynamic-array.h"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/util/dynamic-array.h",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/dynamic-array.o"
+  },
+  {
+    "arguments": [
+      "gcc",
+      "-MD",
+      "-MP",
+      "-DDEBUG",
+      "-DDEBUG_SHADER",
+      "-D_X11",
+      "-Isrc",
+      "-Ivendor/glad/include",
+      "-Ivendor/glfw/include",
+      "-Ivendor/cglm/include",
+      "-Ivendor/stb_image",
+      "-g",
+      "-c",
+      "-o",
+      "obj/Debug/Debug/OpenGL-Template/dynamic_array.o",
+      "src/util/dynamic_array.c"
+    ],
+    "directory": "/home/matei/projects/gamedev/test-game",
+    "file": "/home/matei/projects/gamedev/test-game/src/util/dynamic_array.c",
+    "output": "/home/matei/projects/gamedev/test-game/obj/Debug/Debug/OpenGL-Template/dynamic_array.o"
   },
   {
     "arguments": [
