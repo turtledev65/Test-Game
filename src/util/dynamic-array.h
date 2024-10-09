@@ -23,7 +23,7 @@
 
 #define DYN_ARR_PUSH(arr, val)                                                 \
   do {                                                                         \
-    _dataResize((arr)->data, &(arr)->length, &(arr)->capacity,                 \
+    _dataResize((void **)&(arr)->data, &(arr)->length, &(arr)->capacity,       \
                 (arr)->dataSize);                                              \
     (arr)->data[(arr)->length] = val;                                          \
     ++(arr)->length;                                                           \
@@ -35,4 +35,5 @@
       (arr)->length--;                                                         \
   } while (0);
 
-void _dataResize(void *data, size_t *length, size_t *capacity, size_t dataSize);
+void _dataResize(void **data, size_t *length, size_t *capacity,
+                 size_t dataSize);
