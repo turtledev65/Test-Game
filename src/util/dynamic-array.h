@@ -35,5 +35,12 @@
       (arr)->length--;                                                         \
   } while (0);
 
+#define DYN_ARR_FREE(arr)                                                      \
+  do {                                                                         \
+    free((arr)->data);                                                           \
+    (arr)->data   = NULL;                                                      \
+    (arr)->length = 0;                                                         \
+  } while (0)
+
 void _dataResize(void **data, size_t *length, size_t *capacity,
                  size_t dataSize);
