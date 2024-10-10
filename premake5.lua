@@ -1,8 +1,8 @@
 require "vendor/premake-ecc/ecc"
 
-workspace "OpenGL-Template"
+workspace "Game"
   configurations { 'Debug', 'Release' }
-  startproject "OpenGL-Template"
+  startproject "Game"
 
   flags { "MultiProcessorCompile" }
 
@@ -15,7 +15,7 @@ workspace "OpenGL-Template"
     optimize "Speed"
     flags { "LinkTimeOptimization" }
 
-project "OpenGL-Template"
+project "Game"
   kind "WindowedApp"
   language "C"
 
