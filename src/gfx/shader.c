@@ -1,11 +1,11 @@
 #include "shader.h"
+#include "util/file.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
 #include <glad/glad.h>
 
-static char        *_readShaderFile(const char *path);
 static unsigned int _compileShader(GLenum type, const char *source);
 static unsigned int _linkProgram(unsigned int vertexShader,
                                  unsigned int fragmentShader);
@@ -13,8 +13,8 @@ static unsigned int _linkProgram(unsigned int vertexShader,
 // Pulbic Functions
 void Shader_init(Shader *self, const char *vsPath, const char *fsPath)
 {
-  char *vsSource = _readShaderFile(vsPath);
-  char *fsSource = _readShaderFile(fsPath);
+  char *vsSource = readFile(vsPath);
+  char *fsSource = readFile(fsPath);
   if (vsSource != NULL && fsSource != NULL)
     Shader_initWithSource(self, vsSource, fsSource);
 
@@ -57,25 +57,6 @@ void Shader_setMat4(Shader *self, const char *name, mat4 val)
 }
 
 // Priate Functions
-static char *_readShaderFile(const char *path)
-{
-  FILE *file = fopen(path, "rb");
-  if (file == NULL) {
-    fprintf(stderr, "Failed to find shader file at %s\n", path);
-    return NULL;
-  }
-
-  fseek(file, 0, SEEK_END);
-  size_t length = ftell(file);
-  rewind(file);
-
-  char *source = malloc(length + 1);
-  fread(source, 1, length, file);
-  source[length] = '\0';
-
-  return source;
-}
-
 static unsigned int _compileShader(GLenum type, const char *source)
 {
   unsigned int shader = glCreateShader(type);
