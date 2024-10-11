@@ -6,7 +6,7 @@ static vec3 worldUp = {0.0f, 1.0f, 0.0f};
 
 void Camera_init(Camera *self)
 {
-  self->radius = 15.0f;
+  self->radius = 13.0f;
   self->zoom   = 45.0f;
 
   self->pos.x = 0.0f;
