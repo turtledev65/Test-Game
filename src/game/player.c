@@ -12,6 +12,9 @@ void Player_init(Player *self, vec3 pos)
   Sprite_init(&self->sprite, "res/textures/player.png");
   glm_vec3_copy(pos, self->sprite.pos.raw);
   self->speed = 3.0f;
+  self->sprite.scale.x = 0.5f;
+  self->sprite.scale.y = 0.5f;
+  self->sprite.scale.z = 0.5f;
 }
 
 void Player_update(Player *self, float deltaTime)
