@@ -6,10 +6,11 @@
 
 void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
                         float *vertices, size_t verticesCount,
-                        unsigned int *indices, size_t indicesCount)
+                        unsigned int *indices, size_t indicesCount, vec3 color)
 {
   self->count        = count;
   self->indicesCount = indicesCount;
+  glm_vec3_copy(color, self->color.raw);
 
   // Init vbo
   GBuffer_init(&self->vbo, GL_ARRAY_BUFFER, false);
@@ -48,6 +49,8 @@ void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 {
   Shader_use(&self->shader);
+
+  Shader_setVec3(&self->shader, "uColor", self->color.raw);
 
   mat4 view;
   Camera_getViewMatrix(camera, view);

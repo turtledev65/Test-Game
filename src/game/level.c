@@ -74,7 +74,8 @@ void Level_init(Level *self, const char *path)
   }
   InstancedMesh_init(&self->ground, self->tiles.length, modelMatrices, vertices,
                      sizeof(vertices) / sizeof(vertices[0]), indices,
-                     sizeof(indices) / sizeof(indices[0]));
+                     sizeof(indices) / sizeof(indices[0]),
+                     (vec3){0.47f, 0.24f, 0.24f});
 
   // Init the camera
   Camera_init(&self->camera);
