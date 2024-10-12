@@ -13,6 +13,7 @@ ipch
 **.vlstatus
 
 Makefile
+compile_commands.json
 *.make
 *.xcodeproj
 *.xcworkspace
