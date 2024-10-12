@@ -6,10 +6,6 @@
 #include "core/app.h"
 #include "core/input.h"
 
-#include "gfx/instanced-mesh.h"
-
-#include <cglm/cglm.h>
-
 static App   app;
 static Level level;
 
