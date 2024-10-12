@@ -8,8 +8,9 @@ void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
                         float *vertices, size_t verticesCount,
                         unsigned int *indices, size_t indicesCount, vec3 color)
 {
-  self->count        = count;
-  self->indicesCount = indicesCount;
+  self->count         = count;
+  self->verticesCount = verticesCount;
+  self->indicesCount  = indicesCount;
   glm_vec3_copy(color, self->color.raw);
 
   // Init vbo
@@ -17,8 +18,10 @@ void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
   GBuffer_data(&self->vbo, verticesCount * sizeof(float), vertices);
 
   // Init ibo
-  GBuffer_init(&self->ibo, GL_ELEMENT_ARRAY_BUFFER, false);
-  GBuffer_data(&self->ibo, indicesCount * sizeof(unsigned int), indices);
+  if (indices != NULL) {
+    GBuffer_init(&self->ibo, GL_ELEMENT_ARRAY_BUFFER, false);
+    GBuffer_data(&self->ibo, indicesCount * sizeof(unsigned int), indices);
+  }
 
   // Set the vertex attribs
   Vao_init(&self->vao);
@@ -62,8 +65,11 @@ void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 
   Vao_bind(&self->vao);
   GBuffer_bind(&self->vbo);
-  GBuffer_bind(&self->ibo);
-
-  glDrawElementsInstanced(GL_TRIANGLES, self->indicesCount, GL_UNSIGNED_INT,
-                          NULL, self->count);
+  if (self->indicesCount != 0) {
+    GBuffer_bind(&self->ibo);
+    glDrawElementsInstanced(GL_TRIANGLES, self->indicesCount, GL_UNSIGNED_INT,
+                            NULL, self->count);
+  } else {
+    glDrawArraysInstanced(GL_TRIANGLES, 0, self->verticesCount, self->count);
+  }
 }

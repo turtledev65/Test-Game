@@ -8,6 +8,7 @@
 
 typedef struct {
   size_t count;
+  size_t verticesCount;
   size_t indicesCount;
 
   vec3s color;
