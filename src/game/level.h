@@ -1,27 +1,17 @@
 #pragma once
 
+#include "game/ground.h"
 #include "game/player.h"
-
-#include "gfx/instanced-mesh.h"
-#include "util/dynamic-array.h"
-
-typedef struct {
-  union {
-    size_t col;
-    size_t x;
-  };
-  union {
-    size_t row;
-    size_t z;
-  };
-} Tile;
+#include "game/tile.h"
+#include "game/wall.h"
 
 typedef struct {
   Camera camera;
   Player player;
 
-  DYN_ARR(Tile) tiles;
-  InstancedMesh ground;
+  Tiles  tiles;
+  Ground ground;
+  Wall   wall;
 } Level;
 
 void Level_init(Level *self, const char *path);

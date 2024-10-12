@@ -43,49 +43,47 @@ void Level_init(Level *self, const char *path)
       continue;
     }
 
-    switch (src[i]) {
+    char ch = src[i];
+    switch (ch) {
     case PLAYER_CHAR:
       Player_init(&self->player, (vec3){col, 0.0f, row});
       break;
     case GROUND_CHAR:
-      DYN_ARR_PUSH(&self->tiles, ((Tile){.col = col, .row = row}));
+      DYN_ARR_PUSH(&self->tiles,
+                   ((Tile){.col = col, .row = row, .type = TILE_GROUND}));
       break;
+    case WALL_CHAR: {
+      int wallType = -1;
+      if ((i > 0 && src[i - 1] == GROUND_CHAR) ||
+          (i < length - 1 && src[i + 1] == GROUND_CHAR)) {
+        wallType = TILE_WALL_VERTICAL;
+      } else if ((row > 0 && src[i - width] == GROUND_CHAR) ||
+                 (row < height - 1 && src[i + width] == GROUND_CHAR)) {
+        wallType = TILE_WALL_HORIZONTAL;
+      }
+
+      if (wallType != -1) {
+        DYN_ARR_PUSH(&self->tiles,
+                     ((Tile){.col = col, .row = row, .type = wallType}));
+      }
+    } break;
     default:
       break;
     }
   }
   free(src);
 
-  // Init ground mesh
-  float vertices[] = {
-      -1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f,
-      1.0f,  1.0f, 0.0f, 1.0f,  -1.0f, 0.0f,
-  };
-  unsigned int indices[] = {
-      0, 1, 2, 1, 2, 3,
-  };
-  mat4 modelMatrices[self->tiles.length];
-  for (int i = 0; i < self->tiles.length; i++) {
-    mat4 model = GLM_MAT4_IDENTITY_INIT;
-    glm_translate(model,
-                  (vec3){self->tiles.data[i].x, -2.0f, self->tiles.data[i].z});
-    glm_rotate(model, glm_rad(90.0f), (vec3){1.0f, 0.0f, 0.0f});
-    glm_mat4_copy(model, modelMatrices[i]);
-  }
-  InstancedMesh_init(&self->ground, self->tiles.length, modelMatrices, vertices,
-                     sizeof(vertices) / sizeof(vertices[0]), indices,
-                     sizeof(indices) / sizeof(indices[0]),
-                     (vec3){0.47f, 0.24f, 0.24f});
-
   // Init the camera
   Camera_init(&self->camera);
+  Ground_init(&self->ground, &self->tiles);
+  Wall_init(&self->wall, &self->tiles);
   glm_vec3_copy(self->player.sprite.pos.raw, self->camera.target.raw);
 }
 
 void Level_draw(Level *self)
 {
-
-  InstancedMesh_draw(&self->ground, &self->camera);
+  Ground_draw(&self->ground, &self->camera);
+  Wall_draw(&self->wall, &self->camera);
   Player_draw(&self->player, &self->camera);
 }
 
