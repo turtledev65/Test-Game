@@ -9,8 +9,6 @@
 static App   app;
 static Level level;
 
-InstancedMesh mesh;
-
 static void init()
 {
   Level_init(&level, "res/levels/test.level");
@@ -27,7 +25,6 @@ static void update(float deltaTime)
 
 static void draw(float deltaTime)
 {
-  InstancedMesh_draw(&mesh, &level.camera);
   Level_draw(&level);
 }
 
