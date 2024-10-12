@@ -11,7 +11,10 @@ void Window_init(Window *self, vec2s size, char *title)
 {
   glfwSetErrorCallback(_handleError);
 
-  glfwInit();
+  if (!glfwInit()) {
+    fprintf(stderr, "ERROR: Failed to init glfw\n");
+    exit(1);
+  }
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
