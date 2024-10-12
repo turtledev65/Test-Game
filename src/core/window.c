@@ -28,8 +28,9 @@ void Window_init(Window *self, vec2s size, char *title)
   self->size = size;
 
   size_t len  = strlen(title);
-  self->title = malloc(len);
+  self->title = malloc(len + 1);
   strncpy(self->title, title, len);
+  self->title[len] = '\0';
 
   self->handle =
       glfwCreateWindow(self->size.x, self->size.y, self->title, NULL, NULL);
