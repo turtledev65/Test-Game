@@ -5,3 +5,6 @@
   path = vendor/cglm
   url = https://github.com/recp/cglm.git
   branch = v0.9.4
+[submodule "vendor/premake-ecc"]
+  path = vendor/premake-ecc
+  url = https://github.com/MattBystrin/premake-ecc.git
