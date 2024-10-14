@@ -92,6 +92,6 @@ static void _init()
   Vao_attribPointer(&_vao, &_vbo, 1, 2, GL_FLOAT, 5 * sizeof(float),
                     3 * sizeof(float));
 
-  Shader_init(&_shader, "res/shaders/base.vert.glsl",
-              "res/shaders/base.frag.glsl");
+  Shader_init(&_shader, "res/shaders/sprite.vert.glsl",
+              "res/shaders/sprite.frag.glsl");
 }
