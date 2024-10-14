@@ -60,11 +60,6 @@ void Wall_init(Wall *self, Tiles *tiles)
 
     mat4 model = GLM_MAT4_IDENTITY_INIT;
     glm_translate(model, (vec3){tile.x, -1.0f, tile.z});
-    if (tile.type == TILE_WALL_HORIZONTAL) {
-      glm_rotate(model, glm_rad(90.0f), (vec3){0.0f, 1.0f, 0.0f});
-    }
-    glm_rotate(model, glm_rad(90.0f), (vec3){1.0f, 0.0f, 0.0f});
-    glm_scale(model, (vec3){0.5f, 1.0f, 1.0f});
     glm_mat4_copy(model, modelMatrices[count++]);
   }
 
