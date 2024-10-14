@@ -15,6 +15,8 @@
 #define PLAYER_CHAR 'P'
 #define WALL_CHAR '#'
 
+#define TILE_SCALE 2.0f
+
 // Public Functions
 void Level_init(Level *self, const char *path)
 {
@@ -46,11 +48,16 @@ void Level_init(Level *self, const char *path)
     char ch = src[i];
     switch (ch) {
     case PLAYER_CHAR:
-      Player_init(&self->player, (vec3){col, 0.0f, row});
+      Player_init(&self->player,
+                  (vec3){col * TILE_SCALE, 0.0f, row * TILE_SCALE});
+      DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
+                                         .row  = row * TILE_SCALE,
+                                         .type = TILE_GROUND}));
       break;
     case GROUND_CHAR:
-      DYN_ARR_PUSH(&self->tiles,
-                   ((Tile){.col = col, .row = row, .type = TILE_GROUND}));
+      DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
+                                         .row  = row * TILE_SCALE,
+                                         .type = TILE_GROUND}));
       break;
     case WALL_CHAR: {
       int wallType = -1;
@@ -63,8 +70,9 @@ void Level_init(Level *self, const char *path)
       }
 
       if (wallType != -1) {
-        DYN_ARR_PUSH(&self->tiles,
-                     ((Tile){.col = col, .row = row, .type = wallType}));
+        DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
+                                           .row  = row * TILE_SCALE,
+                                           .type = wallType}));
       }
     } break;
     default:
