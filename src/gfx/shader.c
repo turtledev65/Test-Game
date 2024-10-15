@@ -50,6 +50,12 @@ void Shader_setVec3(Shader *self, const char *name, float *val)
   glUniform3fv(glGetUniformLocation(self->handle, name), 1, val);
 }
 
+void shader_setVec3XYZ(Shader *self, const char *name, float x, float y,
+                       float z)
+{
+  glUniform3f(glGetUniformLocation(self->handle, name), x, y, z);
+}
+
 void Shader_setMat4(Shader *self, const char *name, mat4 val)
 {
   glUniformMatrix4fv(glGetUniformLocation(self->handle, name), 1, GL_FALSE,
