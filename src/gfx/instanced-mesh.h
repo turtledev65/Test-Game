@@ -3,15 +3,15 @@
 #include "gfx/gbuffer.h"
 #include "gfx/shader.h"
 #include "gfx/vao.h"
+#include "gfx/geometry.h"
 
 #include "game/camera.h"
 
 typedef struct {
-  size_t count;
-  size_t verticesCount;
-  size_t indicesCount;
-
-  vec3s color;
+  size_t   count;
+  Geometry geometry;
+  vec3     instanceColor;
+  mat4    *modelMatrices;
 
   Shader  shader;
   Vao     vao;
@@ -19,7 +19,9 @@ typedef struct {
   GBuffer ibo;
 } InstancedMesh;
 
-void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
-                        float *vertices, size_t verticesCount,
-                        unsigned int *indices, size_t indicesCount, vec3 color);
+void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
+                        vec3 instanceColor, size_t count);
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera);
+
+void InstancedMesh_setMatrixAt(InstancedMesh *self, size_t i, mat4 matrix);
+void InstancedMesh_sendModelMatrices(InstancedMesh *self);

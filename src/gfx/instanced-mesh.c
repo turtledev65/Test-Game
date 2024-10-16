@@ -4,34 +4,42 @@
 #include <cglm/mat4.h>
 #include <stdlib.h>
 
-void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
-                        float *vertices, size_t verticesCount,
-                        unsigned int *indices, size_t indicesCount, vec3 color)
+void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
+                        vec3 instanceColor, size_t count)
 {
-  self->count         = count;
-  self->verticesCount = verticesCount;
-  self->indicesCount  = indicesCount;
-  glm_vec3_copy(color, self->color.raw);
+  self->count    = count;
+  self->geometry = *geometry;
+  glm_vec3_copy(instanceColor, self->instanceColor);
 
-  // Init vbo
-  GBuffer_init(&self->vbo, GL_ARRAY_BUFFER, false);
-  GBuffer_data(&self->vbo, verticesCount * sizeof(float), vertices);
-
-  // Init ibo
-  if (indices != NULL) {
-    GBuffer_init(&self->ibo, GL_ELEMENT_ARRAY_BUFFER, false);
-    GBuffer_data(&self->ibo, indicesCount * sizeof(unsigned int), indices);
+  self->vbo = Geometry_generateVbo(geometry);
+  if (geometry->indicesCount > 0) {
+    self->ibo = Geometry_generateIbo(geometry);
   }
 
-  // Set the vertex attribs
   Vao_init(&self->vao);
-  Vao_attribPointer(&self->vao, &self->vbo, 0, 3, GL_FLOAT, 3 * sizeof(float),
-                    0);
+  Geometry_setVaoAttribs(geometry, &self->vbo, &self->vao);
 
   // Set the instance matrices
+  self->modelMatrices = calloc(count, sizeof(mat4));
+
+  Shader_init(&self->shader, "res/shaders/instanced.vert.glsl",
+              "res/shaders/instanced.frag.glsl");
+}
+
+void InstancedMesh_setMatrixAt(InstancedMesh *self, size_t i, mat4 matrix)
+{
+  if (i >= self->count) {
+    return;
+  }
+
+  glm_mat4_copy(matrix, self->modelMatrices[i]);
+}
+
+void InstancedMesh_sendModelMatrices(InstancedMesh *self)
+{
   GBuffer buffer;
   GBuffer_init(&buffer, GL_ARRAY_BUFFER, false);
-  GBuffer_data(&buffer, count * sizeof(mat4), &modelMatrices[0]);
+  GBuffer_data(&buffer, self->count * sizeof(mat4), &self->modelMatrices[0]);
   Vao_attribPointer(&self->vao, &buffer, 1, 4, GL_FLOAT, sizeof(mat4), 0);
   Vao_attribPointer(&self->vao, &buffer, 2, 4, GL_FLOAT, sizeof(mat4),
                     1 * sizeof(vec4));
@@ -44,16 +52,13 @@ void InstancedMesh_init(InstancedMesh *self, size_t count, mat4 *modelMatrices,
   glVertexAttribDivisor(3, 1);
   glVertexAttribDivisor(4, 1);
   glBindVertexArray(0);
-
-  Shader_init(&self->shader, "res/shaders/instanced.vert.glsl",
-              "res/shaders/instanced.frag.glsl");
 }
 
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 {
   Shader_use(&self->shader);
 
-  Shader_setVec3(&self->shader, "uColor", self->color.raw);
+  Shader_setVec3(&self->shader, "uColor", self->instanceColor);
 
   mat4 view;
   Camera_getViewMatrix(camera, view);
@@ -65,11 +70,14 @@ void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 
   Vao_bind(&self->vao);
   GBuffer_bind(&self->vbo);
-  if (self->indicesCount != 0) {
+
+  if (self->geometry.indicesCount > 0) {
     GBuffer_bind(&self->ibo);
-    glDrawElementsInstanced(GL_TRIANGLES, self->indicesCount, GL_UNSIGNED_INT,
-                            NULL, self->count);
+    glDrawElementsInstanced(GL_TRIANGLES, self->geometry.indicesCount,
+                            GL_UNSIGNED_INT, NULL, self->count);
   } else {
-    glDrawArraysInstanced(GL_TRIANGLES, 0, self->verticesCount, self->count);
+    glDrawArraysInstanced(GL_TRIANGLES, 0,
+                          Geometry_getVerticesCount(&self->geometry),
+                          self->count);
   }
 }

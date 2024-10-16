@@ -1,8 +1,10 @@
 #include "ground.h"
+#include "gfx/geometry.h"
+#include "util/array.h"
 
 void Ground_init(Ground *self, Tiles *tiles)
 {
-  float vertices[] = {
+  float positions[] = {
       -1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f,
       1.0f,  1.0f, 0.0f, 1.0f,  -1.0f, 0.0f,
   };
@@ -10,22 +12,32 @@ void Ground_init(Ground *self, Tiles *tiles)
       0, 1, 2, 1, 2, 3,
   };
 
-  mat4   modelMatrices[tiles->length];
+  Geometry geometry;
+  Geometry_init(&geometry);
+  Geometry_setPositions(&geometry, positions, LENGTH(positions));
+  Geometry_setIndices(&geometry, indices, LENGTH(indices));
+
   size_t count = 0;
   for (int i = 0; i < tiles->length; i++) {
     if (tiles->data[i].type != TILE_GROUND)
       continue;
+    count++;
+  }
+  InstancedMesh_init(&self->mesh, &geometry, (vec3){0.47f, 0.24f, 0.24f},
+                     count);
+
+  size_t idx = 0;
+  for (size_t i = 0; i < tiles->length; i++) {
+    Tile tile = tiles->data[i];
+    if (tiles->data[i].type != TILE_GROUND)
+      continue;
 
     mat4 model = GLM_MAT4_IDENTITY_INIT;
-    glm_translate(model, (vec3){tiles->data[i].x, -2.0f, tiles->data[i].z});
+    glm_translate(model, (vec3){tile.x, -2.0f, tile.z});
     glm_rotate(model, glm_rad(90.0f), (vec3){1.0f, 0.0f, 0.0f});
-    glm_mat4_copy(model, modelMatrices[count++]);
+    InstancedMesh_setMatrixAt(&self->mesh, idx++, model);
   }
-
-  InstancedMesh_init(&self->mesh, count, modelMatrices, vertices,
-                     sizeof(vertices) / sizeof(vertices[0]), indices,
-                     sizeof(indices) / sizeof(indices[0]),
-                     (vec3){0.47f, 0.24f, 0.24f});
+  InstancedMesh_sendModelMatrices(&self->mesh);
 }
 
 void Ground_draw(Ground *self, Camera *camera)

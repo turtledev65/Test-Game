@@ -1,4 +1,5 @@
 #include "wall.h"
+#include "util/array.h"
 
 #include <cglm/cglm.h>
 #include <cglm/mat4.h>
@@ -50,9 +51,21 @@ void Wall_init(Wall *self, Tiles *tiles)
       -1.0f, 1.0f,  -1.0f, //
   };
 
-  mat4   modelMatrices[tiles->length];
+  Geometry geometry;
+  Geometry_init(&geometry);
+  Geometry_setPositions(&geometry, vertices, LENGTH(vertices));
+
   size_t count = 0;
   for (int i = 0; i < tiles->length; i++) {
+    Tile tile = tiles->data[i];
+    if (tile.type != TILE_WALL_VERTICAL && tile.type != TILE_WALL_HORIZONTAL) {
+      continue;
+    }
+    count++;
+  }
+  InstancedMesh_init(&self->mesh, &geometry, (vec3){0.6, 0.14f, 0.14f}, count);
+  size_t idx = 0;
+  for (size_t i = 0; i < tiles->length; i++) {
     Tile tile = tiles->data[i];
     if (tile.type != TILE_WALL_VERTICAL && tile.type != TILE_WALL_HORIZONTAL) {
       continue;
@@ -60,12 +73,9 @@ void Wall_init(Wall *self, Tiles *tiles)
 
     mat4 model = GLM_MAT4_IDENTITY_INIT;
     glm_translate(model, (vec3){tile.x, -1.0f, tile.z});
-    glm_mat4_copy(model, modelMatrices[count++]);
+    InstancedMesh_setMatrixAt(&self->mesh, idx++, model);
   }
-
-  InstancedMesh_init(&self->mesh, count, modelMatrices, vertices,
-                     sizeof(vertices) / sizeof(vertices[0]), NULL, 0,
-                     (vec3){0.6, 0.14f, 0.14f});
+  InstancedMesh_sendModelMatrices(&self->mesh);
 }
 
 void Wall_draw(Wall *self, Camera *camera)
