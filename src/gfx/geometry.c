@@ -165,17 +165,21 @@ void Geometry_setVaoAttribs(Geometry *self, GBuffer *vbo, Vao *vao)
     return;
   }
 
-  size_t offset = 0;
+  size_t posCount  = self->positionsCount > 0 ? 3 : 0;
+  size_t normCount = self->normalsCount > 0 ? 3 : 0;
+  size_t textCount = self->textureCoordsCount > 0 ? 2 : 0;
+  size_t stride    = (posCount + normCount + textCount) * sizeof(float);
+  size_t offset    = 0;
   if (self->positionsCount > 0) {
-    Vao_attribPointer(vao, vbo, 0, 3, GL_FLOAT, 0, 0);
+    Vao_attribPointer(vao, vbo, 0, 3, GL_FLOAT, stride, 0);
     offset += self->positionsCount * sizeof(float);
   }
   if (self->normalsCount > 0) {
-    Vao_attribPointer(vao, vbo, 1, 3, GL_FLOAT, 0, offset);
+    Vao_attribPointer(vao, vbo, 1, 3, GL_FLOAT, stride, offset);
     offset += self->normalsCount * sizeof(float);
   }
   if (self->textureCoordsCount > 0) {
-    Vao_attribPointer(vao, vbo, 2, 2, GL_FLOAT, 0, offset);
+    Vao_attribPointer(vao, vbo, 2, 2, GL_FLOAT, stride, offset);
   }
 }
 
