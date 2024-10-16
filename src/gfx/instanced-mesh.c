@@ -40,17 +40,17 @@ void InstancedMesh_sendModelMatrices(InstancedMesh *self)
   GBuffer buffer;
   GBuffer_init(&buffer, GL_ARRAY_BUFFER, false);
   GBuffer_data(&buffer, self->count * sizeof(mat4), &self->modelMatrices[0]);
-  Vao_attribPointer(&self->vao, &buffer, 1, 4, GL_FLOAT, sizeof(mat4), 0);
-  Vao_attribPointer(&self->vao, &buffer, 2, 4, GL_FLOAT, sizeof(mat4),
-                    1 * sizeof(vec4));
-  Vao_attribPointer(&self->vao, &buffer, 3, 4, GL_FLOAT, sizeof(mat4),
-                    2 * sizeof(vec4));
+  Vao_attribPointer(&self->vao, &buffer, 3, 4, GL_FLOAT, sizeof(mat4), 0);
   Vao_attribPointer(&self->vao, &buffer, 4, 4, GL_FLOAT, sizeof(mat4),
+                    1 * sizeof(vec4));
+  Vao_attribPointer(&self->vao, &buffer, 5, 4, GL_FLOAT, sizeof(mat4),
+                    2 * sizeof(vec4));
+  Vao_attribPointer(&self->vao, &buffer, 6, 4, GL_FLOAT, sizeof(mat4),
                     3 * sizeof(vec4));
-  glVertexAttribDivisor(1, 1);
-  glVertexAttribDivisor(2, 1);
   glVertexAttribDivisor(3, 1);
   glVertexAttribDivisor(4, 1);
+  glVertexAttribDivisor(5, 1);
+  glVertexAttribDivisor(6, 1);
   glBindVertexArray(0);
   GBuffer_delete(&buffer);
 }
