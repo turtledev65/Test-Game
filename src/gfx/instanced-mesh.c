@@ -52,6 +52,7 @@ void InstancedMesh_sendModelMatrices(InstancedMesh *self)
   glVertexAttribDivisor(3, 1);
   glVertexAttribDivisor(4, 1);
   glBindVertexArray(0);
+  GBuffer_delete(&buffer);
 }
 
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
