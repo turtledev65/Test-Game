@@ -10,6 +10,9 @@ void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
   self->count    = count;
   self->geometry = *geometry;
   glm_vec3_copy(instanceColor, self->instanceColor);
+  self->hasTexture = false;
+
+  self->_initialized = false;
 
   self->vbo = Geometry_generateVbo(geometry);
   if (geometry->indicesCount > 0) {
@@ -66,6 +69,11 @@ void InstancedMesh_sendModelMatrices(InstancedMesh *self)
 
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 {
+  if (!self->_initialized) {
+    self->_initialized = true;
+    InstancedMesh_sendModelMatrices(self);
+  }
+
   Shader_use(&self->shader);
 
   if (self->hasTexture) {

@@ -17,6 +17,8 @@ typedef struct {
   bool    hasTexture;
   Texture texture;
 
+  bool _initialized;
+
   Shader  shader;
   Vao     vao;
   GBuffer vbo;
