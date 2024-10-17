@@ -16,3 +16,16 @@ bool isKeyPressed(int key);
 bool isKeyDown(int key);
 
 void Keyboard_update(GLFWwindow *handle);
+
+typedef struct {
+  bool down, lastDown;
+} MouseButton;
+
+typedef struct {
+  MouseButton buttons[GLFW_MOUSE_BUTTON_LAST];
+} Mouse;
+extern Mouse mouse;
+
+bool isMouseButtonPressed(int button);
+bool isMouseButtonDown(int button);
+void Mouse_update(GLFWwindow *handle);

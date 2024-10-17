@@ -20,3 +20,24 @@ void Keyboard_update(GLFWwindow *handle)
     keyboard.keys[i].down     = glfwGetKey(handle, i) == GLFW_PRESS;
   }
 }
+
+Mouse mouse;
+
+bool isMouseButtonPressed(int button)
+{
+  return mouse.buttons[button].down && !mouse.buttons[button].lastDown;
+}
+
+bool isMouseButtonDown(int button)
+{
+  return mouse.buttons[button].down;
+}
+
+void Mouse_update(GLFWwindow *handle)
+{
+  // 32 is the first key
+  for (int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++) {
+    mouse.buttons[i].lastDown = mouse.buttons[i].down;
+    mouse.buttons[i].down     = glfwGetMouseButton(handle, i) == GLFW_PRESS;
+  }
+}

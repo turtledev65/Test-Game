@@ -66,6 +66,7 @@ static void _update(App *self, float deltaTime)
 {
 
   Keyboard_update(window.handle);
+  Mouse_update(window.handle);
   if (self->update != NULL)
     self->update(deltaTime);
 
