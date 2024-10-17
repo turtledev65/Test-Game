@@ -84,9 +84,6 @@ float *Geometry_getVertices(Geometry *self)
   size_t length =
       self->positionsCount + self->normalsCount + self->textureCoordsCount;
   float *out = malloc(length * sizeof(float));
-  for (size_t i = 0; i < length; i++) {
-    out[i] = -2.0f;
-  }
 
   size_t stride = 0;
   if (self->positionsCount > 0) {
@@ -172,14 +169,15 @@ void Geometry_setVaoAttribs(Geometry *self, GBuffer *vbo, Vao *vao)
   size_t offset    = 0;
   if (self->positionsCount > 0) {
     Vao_attribPointer(vao, vbo, 0, 3, GL_FLOAT, stride, 0);
-    offset += self->positionsCount * sizeof(float);
+    offset += posCount * sizeof(float);
   }
   if (self->normalsCount > 0) {
     Vao_attribPointer(vao, vbo, 1, 3, GL_FLOAT, stride, offset);
-    offset += self->normalsCount * sizeof(float);
+    offset += normCount * sizeof(float);
   }
   if (self->textureCoordsCount > 0) {
     Vao_attribPointer(vao, vbo, 2, 2, GL_FLOAT, stride, offset);
+    offset += textCount * sizeof(float);
   }
 }
 
