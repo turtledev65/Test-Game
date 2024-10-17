@@ -31,4 +31,3 @@ void InstancedMesh_draw(InstancedMesh *self, Camera *camera);
 
 void InstancedMesh_setMatrixAt(InstancedMesh *self, size_t i, mat4 matrix);
 void InstancedMesh_setTexture(InstancedMesh *self, Texture *texture);
-void InstancedMesh_sendModelMatrices(InstancedMesh *self);

@@ -4,15 +4,18 @@
 #include <cglm/mat4.h>
 #include <stdlib.h>
 
+static void _sendModelMatrices(InstancedMesh *self);
+
+// Public Functions
 void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
                         vec3 instanceColor, size_t count)
 {
+  self->_initialized = false;
+
   self->count    = count;
   self->geometry = *geometry;
   glm_vec3_copy(instanceColor, self->instanceColor);
   self->hasTexture = false;
-
-  self->_initialized = false;
 
   self->vbo = Geometry_generateVbo(geometry);
   if (geometry->indicesCount > 0) {
@@ -47,31 +50,11 @@ void InstancedMesh_setMatrixAt(InstancedMesh *self, size_t i, mat4 matrix)
   glm_mat4_copy(matrix, self->modelMatrices[i]);
 }
 
-void InstancedMesh_sendModelMatrices(InstancedMesh *self)
-{
-  GBuffer buffer;
-  GBuffer_init(&buffer, GL_ARRAY_BUFFER, false);
-  GBuffer_data(&buffer, self->count * sizeof(mat4), &self->modelMatrices[0]);
-  Vao_attribPointer(&self->vao, &buffer, 3, 4, GL_FLOAT, sizeof(mat4), 0);
-  Vao_attribPointer(&self->vao, &buffer, 4, 4, GL_FLOAT, sizeof(mat4),
-                    1 * sizeof(vec4));
-  Vao_attribPointer(&self->vao, &buffer, 5, 4, GL_FLOAT, sizeof(mat4),
-                    2 * sizeof(vec4));
-  Vao_attribPointer(&self->vao, &buffer, 6, 4, GL_FLOAT, sizeof(mat4),
-                    3 * sizeof(vec4));
-  glVertexAttribDivisor(3, 1);
-  glVertexAttribDivisor(4, 1);
-  glVertexAttribDivisor(5, 1);
-  glVertexAttribDivisor(6, 1);
-  glBindVertexArray(0);
-  GBuffer_delete(&buffer);
-}
-
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 {
   if (!self->_initialized) {
     self->_initialized = true;
-    InstancedMesh_sendModelMatrices(self);
+    _sendModelMatrices(self);
   }
 
   Shader_use(&self->shader);
@@ -103,4 +86,25 @@ void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
                           Geometry_getVerticesCount(&self->geometry),
                           self->count);
   }
+}
+
+// Private functions
+static void _sendModelMatrices(InstancedMesh *self)
+{
+  GBuffer buffer;
+  GBuffer_init(&buffer, GL_ARRAY_BUFFER, false);
+  GBuffer_data(&buffer, self->count * sizeof(mat4), &self->modelMatrices[0]);
+  Vao_attribPointer(&self->vao, &buffer, 3, 4, GL_FLOAT, sizeof(mat4), 0);
+  Vao_attribPointer(&self->vao, &buffer, 4, 4, GL_FLOAT, sizeof(mat4),
+                    1 * sizeof(vec4));
+  Vao_attribPointer(&self->vao, &buffer, 5, 4, GL_FLOAT, sizeof(mat4),
+                    2 * sizeof(vec4));
+  Vao_attribPointer(&self->vao, &buffer, 6, 4, GL_FLOAT, sizeof(mat4),
+                    3 * sizeof(vec4));
+  glVertexAttribDivisor(3, 1);
+  glVertexAttribDivisor(4, 1);
+  glVertexAttribDivisor(5, 1);
+  glVertexAttribDivisor(6, 1);
+  glBindVertexArray(0);
+  GBuffer_delete(&buffer);
 }
