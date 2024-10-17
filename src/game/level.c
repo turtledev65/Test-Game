@@ -63,7 +63,11 @@ void Level_init(Level *self, const char *path)
       bool isWall = ((i > 0 && src[i - 1] == GROUND_CHAR) ||
                      (i < length - 1 && src[i + 1] == GROUND_CHAR)) ||
                     ((row > 0 && src[i - (width + 1)] == GROUND_CHAR) ||
-                     (row < height - 1 && src[i + width + 1] == GROUND_CHAR));
+                     (row < height - 1 && src[i + width + 1] == GROUND_CHAR)) ||
+                    ((row > 0 && src[i - width] == GROUND_CHAR) ||
+                     (row < height - 1 && src[i + width] == GROUND_CHAR)) ||
+                    ((row > 0 && src[i - width - 2] == GROUND_CHAR) ||
+                     (row < height - 1 && src[i + width + 2] == GROUND_CHAR));
 
       if (isWall) {
         DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
