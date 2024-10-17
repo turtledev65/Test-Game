@@ -37,7 +37,6 @@ void Ground_init(Ground *self, Tiles *tiles)
     glm_rotate(model, glm_rad(90.0f), (vec3){1.0f, 0.0f, 0.0f});
     InstancedMesh_setMatrixAt(&self->mesh, idx++, model);
   }
-  InstancedMesh_sendModelMatrices(&self->mesh);
 }
 
 void Ground_draw(Ground *self, Camera *camera)
