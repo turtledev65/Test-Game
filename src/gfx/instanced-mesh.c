@@ -32,9 +32,6 @@ void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
 
   // Set the instance matrices
   self->modelMatrices = calloc(count, sizeof(mat4));
-
-  Shader_init(&self->shader, "res/shaders/instanced.vert.glsl",
-              "res/shaders/instanced.frag.glsl");
 }
 
 void InstancedMesh_setTexture(InstancedMesh *self, Texture *texture)
