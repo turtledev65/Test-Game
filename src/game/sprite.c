@@ -1,10 +1,11 @@
 #include "sprite.h"
 
 #include "core/app.h"
-
 #include "gfx/gbuffer.h"
+#include "gfx/geometry.h"
 #include "gfx/shader.h"
 #include "gfx/vao.h"
+#include "util/array.h"
 
 #include <cglm/cglm.h>
 
@@ -67,30 +68,25 @@ static void _init()
   if (_initialized) {
     return;
   }
-
   _initialized = true;
 
-  float vertices[] = {
-      // position         // texture coords
-      -1.0f, 1.0f,  0.0f, 0.0f, 1.0f, // top left
-      -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, // bottom left
-      1.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top right
-      1.0f,  -1.0f, 0.0f, 1.0f, 0.0f, // bottom right
-  };
-  GBuffer_init(&_vbo, GL_ARRAY_BUFFER, false);
-  GBuffer_data(&_vbo, sizeof(vertices), vertices);
+  float positions[]      = {-1.0f, 1.0f, 0.0f, -1.0f, -1.0f, 0.0f,
+                            1.0f,  1.0f, 0.0f, 1.0f,  -1.0f, 0.0f};
+  float textureCoords[]  = {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f};
+  unsigned int indices[] = {0, 1, 2, 1, 2, 3};
 
-  unsigned int indices[] = {
-      0, 1, 2, // First Triagnle
-      1, 2, 3  // Second Triangle
-  };
-  GBuffer_init(&_ibo, GL_ELEMENT_ARRAY_BUFFER, false);
-  GBuffer_data(&_ibo, sizeof(indices), indices);
+  Geometry geometry;
+  Geometry_init(&geometry);
+  Geometry_setPositions(&geometry, positions, LENGTH(positions));
+  Geometry_setTextureCoords(&geometry, textureCoords, LENGTH(textureCoords));
+  Geometry_setIndices(&geometry, indices, LENGTH(indices));
 
+  _vbo = Geometry_generateVbo(&geometry);
+  _ibo = Geometry_generateIbo(&geometry);
   Vao_init(&_vao);
-  Vao_attribPointer(&_vao, &_vbo, 0, 3, GL_FLOAT, 5 * sizeof(float), 0);
-  Vao_attribPointer(&_vao, &_vbo, 1, 2, GL_FLOAT, 5 * sizeof(float),
-                    3 * sizeof(float));
+  Geometry_setVaoAttribs(&geometry, &_vbo, &_vao);
+
+  Geometry_free(&geometry);
 
   Shader_init(&_shader, "res/shaders/sprite.vert.glsl",
               "res/shaders/sprite.frag.glsl");
