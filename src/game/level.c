@@ -60,19 +60,15 @@ void Level_init(Level *self, const char *path)
                                          .type = TILE_GROUND}));
       break;
     case WALL_CHAR: {
-      int wallType = -1;
-      if ((i > 0 && src[i - 1] == GROUND_CHAR) ||
-          (i < length - 1 && src[i + 1] == GROUND_CHAR)) {
-        wallType = TILE_WALL_VERTICAL;
-      } else if ((row > 0 && src[i - (width + 1)] == GROUND_CHAR) ||
-                 (row < height - 1 && src[i + width + 1] == GROUND_CHAR)) {
-        wallType = TILE_WALL_HORIZONTAL;
-      }
+      bool isWall = ((i > 0 && src[i - 1] == GROUND_CHAR) ||
+                     (i < length - 1 && src[i + 1] == GROUND_CHAR)) ||
+                    ((row > 0 && src[i - (width + 1)] == GROUND_CHAR) ||
+                     (row < height - 1 && src[i + width + 1] == GROUND_CHAR));
 
-      if (wallType != -1) {
+      if (isWall) {
         DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
                                            .row  = row * TILE_SCALE,
-                                           .type = wallType}));
+                                           .type = TILE_WALL}));
       }
     } break;
     default:

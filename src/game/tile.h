@@ -6,8 +6,7 @@
 
 typedef enum {
   TILE_GROUND = 0,
-  TILE_WALL_VERTICAL,
-  TILE_WALL_HORIZONTAL,
+  TILE_WALL,
 } TileType;
 
 typedef struct {
