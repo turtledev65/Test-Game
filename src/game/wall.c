@@ -45,7 +45,7 @@ void Wall_init(Wall *self, Tiles *tiles)
   InstancedMesh_init(&self->mesh, &geometry, (vec3){0.6, 0.14f, 0.14f}, count);
   Texture texture;
   glActiveTexture(GL_TEXTURE0);
-  Texture_init(&texture, "res/textures/container.jpg");
+  Texture_init(&texture, "res/textures/Wall.png");
   InstancedMesh_setTexture(&self->mesh, &texture);
 
   size_t idx = 0;
