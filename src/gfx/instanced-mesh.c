@@ -1,10 +1,15 @@
 #include "instanced-mesh.h"
 #include "core/app.h"
+#include "util/file.h"
 
 #include <cglm/mat4.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-static void _sendModelMatrices(InstancedMesh *self);
+static void  _sendModelMatrices(InstancedMesh *self);
+static void  _generateShader(InstancedMesh *self);
+static char *_insertDefine(char *shader, char *defineName);
 
 // Public Functions
 void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
@@ -55,6 +60,7 @@ void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
   if (!self->_initialized) {
     self->_initialized = true;
     _sendModelMatrices(self);
+    _generateShader(self);
   }
 
   Shader_use(&self->shader);
@@ -107,4 +113,49 @@ static void _sendModelMatrices(InstancedMesh *self)
   glVertexAttribDivisor(6, 1);
   glBindVertexArray(0);
   GBuffer_delete(&buffer);
+}
+
+static void _generateShader(InstancedMesh *self)
+{
+  char *vsSource = readFile("res/shaders/instanced.vert.glsl");
+  char *fsSource = readFile("res/shaders/instanced.frag.glsl");
+  if (self->hasTexture) {
+    char *newVsSource = _insertDefine(vsSource, "TEXTURE");
+    char *newFsSource = _insertDefine(fsSource, "TEXTURE");
+
+    free(vsSource);
+    free(fsSource);
+    vsSource = newVsSource;
+    fsSource = newFsSource;
+  }
+
+  Shader_initWithSource(&self->shader, vsSource, fsSource);
+  free(vsSource);
+  free(fsSource);
+}
+
+static char *_insertDefine(char *shader, char *defineName)
+{
+  size_t shaderLength = strlen(shader);
+  size_t defineLength = strlen(defineName) + sizeof("#define \n");
+
+  char defineString[defineLength];
+  snprintf(defineString, defineLength, "#define %s\n", defineName);
+
+  char *out     = malloc((shaderLength + defineLength) * sizeof(char));
+  char *version = strstr(shader, "#version");
+  if (version != NULL) {
+    size_t idx = version - shader;
+    while (idx < shaderLength && shader[idx] != '\n' && shader[idx] != '\0') {
+      idx++;
+    }
+    strncpy(out, shader, idx + 1);
+    out[idx + 1] = '\0';
+    strcat(out, defineString);
+    strcat(out, shader + idx + 1);
+  } else {
+    asprintf(&out, "#define %s\n%s", defineName, shader);
+  }
+
+  return out;
 }
