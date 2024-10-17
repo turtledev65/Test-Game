@@ -23,7 +23,7 @@ void Ground_init(Ground *self, Tiles *tiles)
       continue;
     count++;
   }
-  InstancedMesh_init(&self->mesh, &geometry, (vec3){0.47f, 0.24f, 0.24f},
+  InstancedMesh_init(&self->mesh, &geometry, (vec3){0.894f, 0.659f, 0.376f},
                      count);
 
   size_t idx = 0;
