@@ -26,6 +26,15 @@ void InstancedMesh_init(InstancedMesh *self, Geometry *geometry,
               "res/shaders/instanced.frag.glsl");
 }
 
+void InstancedMesh_setTexture(InstancedMesh *self, Texture *texture)
+{
+  if (self->hasTexture) {
+    Texture_destroy(&self->texture);
+  }
+  self->texture    = *texture;
+  self->hasTexture = true;
+}
+
 void InstancedMesh_setMatrixAt(InstancedMesh *self, size_t i, mat4 matrix)
 {
   if (i >= self->count) {
@@ -58,6 +67,11 @@ void InstancedMesh_sendModelMatrices(InstancedMesh *self)
 void InstancedMesh_draw(InstancedMesh *self, Camera *camera)
 {
   Shader_use(&self->shader);
+
+  if (self->hasTexture) {
+    glActiveTexture(GL_TEXTURE0);
+    Texture_bind(&self->texture);
+  }
 
   Shader_setVec3(&self->shader, "uColor", self->instanceColor);
 
