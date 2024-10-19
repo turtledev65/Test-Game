@@ -56,7 +56,7 @@ float getAspectRatio()
 static void _draw(App *self, float deltaTime)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  glClearColor(0.471f, 0.235f, 0.204f, 1.0f);
 
   if (self->draw != NULL)
     self->draw(deltaTime);

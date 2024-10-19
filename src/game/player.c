@@ -8,7 +8,7 @@
 #define WALKING_SPEED 3.0f
 #define GRAVITY 32.0f
 
-#define ANIMATION_SPEED 10.0f
+#define ANIMATION_SPEED 8.0f
 
 static bool _isOnGround(Player *self);
 
