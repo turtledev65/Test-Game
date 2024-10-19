@@ -4,7 +4,7 @@
 
 typedef struct {
   Sprite sprite;
-  float speed;
+  vec3s  vel;
 } Player;
 
 void Player_init(Player *self, vec3 pos);
