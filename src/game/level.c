@@ -12,10 +12,14 @@
 #include <cglm/cglm.h>
 
 #define GROUND_CHAR '.'
-#define PLAYER_CHAR 'P'
+#define GAP_CHAR ' '
 #define WALL_CHAR '#'
+#define PLAYER_CHAR 'P'
+#define SWORD_CHAR 'S'
 
 #define TILE_SCALE 2.0f
+
+static bool isGroundChar(char ch);
 
 // Public Functions
 void Level_init(Level *self, const char *path)
@@ -60,20 +64,28 @@ void Level_init(Level *self, const char *path)
                                          .type = TILE_GROUND}));
       break;
     case WALL_CHAR: {
-      bool isWall = ((i > 0 && src[i - 1] == GROUND_CHAR) ||
-                     (i < length - 1 && src[i + 1] == GROUND_CHAR)) ||
-                    ((row > 0 && src[i - (width + 1)] == GROUND_CHAR) ||
-                     (row < height - 1 && src[i + width + 1] == GROUND_CHAR)) ||
-                    ((row > 0 && src[i - width] == GROUND_CHAR) ||
-                     (row < height - 1 && src[i + width] == GROUND_CHAR)) ||
-                    ((row > 0 && src[i - width - 2] == GROUND_CHAR) ||
-                     (row < height - 1 && src[i + width + 2] == GROUND_CHAR));
+      bool isWall = ((i > 0 && isGroundChar(src[i - 1])) ||
+                     (i < length - 1 && isGroundChar(src[i + 1]))) ||
+                    ((row > 0 && isGroundChar(src[i - (width + 1)])) ||
+                     (row < height - 1 && isGroundChar(src[i + width + 1]))) ||
+                    ((row > 0 && isGroundChar(src[i - width])) ||
+                     (row < height - 1 && isGroundChar(src[i + width]))) ||
+                    ((row > 0 && isGroundChar(src[i - width - 2])) ||
+                     (row < height - 1 && isGroundChar(src[i + width + 2])));
 
       if (isWall) {
         DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
                                            .row  = row * TILE_SCALE,
                                            .type = TILE_WALL}));
       }
+      break;
+    case SWORD_CHAR:
+      Sword_init(&self->sword,
+                 (vec3){col * TILE_SCALE, 0.0f, row * TILE_SCALE});
+      DYN_ARR_PUSH(&self->tiles, ((Tile){.col  = col * TILE_SCALE,
+                                         .row  = row * TILE_SCALE,
+                                         .type = TILE_GROUND}));
+      break;
     } break;
     default:
       break;
@@ -92,6 +104,7 @@ void Level_draw(Level *self)
 {
   Ground_draw(&self->ground, &self->camera);
   Wall_draw(&self->wall, &self->camera);
+  Sword_draw(&self->sword, &self->camera);
   Player_draw(&self->player, &self->camera);
 }
 
@@ -99,6 +112,7 @@ void Level_update(Level *self, float deltaTime)
 {
   Camera_update(&self->camera);
   Player_update(&self->player, deltaTime);
+  Sword_update(&self->sword, &self->player, deltaTime);
 
   // Update the target to the player's position
   vec3s target = {
@@ -108,4 +122,11 @@ void Level_update(Level *self, float deltaTime)
   };
   glm_vec3_lerp(self->camera.target.raw, target.raw, 0.05f,
                 self->camera.target.raw);
+}
+
+// Private Functions
+static bool isGroundChar(char ch)
+{
+  return ch == GROUND_CHAR || ch == PLAYER_CHAR || ch == SWORD_CHAR ||
+         ch == GAP_CHAR;
 }

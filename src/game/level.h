@@ -2,12 +2,14 @@
 
 #include "game/ground.h"
 #include "game/player.h"
+#include "game/sword.h"
 #include "game/tile.h"
 #include "game/wall.h"
 
 typedef struct {
   Camera camera;
   Player player;
+  Sword  sword;
 
   Tiles  tiles;
   Ground ground;
